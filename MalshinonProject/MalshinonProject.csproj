@@ -113,6 +113,7 @@
     <Compile Include="ConnectToSql.cs" />
     <Compile Include="CSVDataImport.cs" />
     <Compile Include="Functions.cs" />
+    <Compile Include="FunctionsIfNotIn.cs" />
     <Compile Include="Menue.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PrintsForDisplay.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Validation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
