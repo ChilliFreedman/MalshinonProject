@@ -21,63 +21,67 @@ namespace MalshinonProject
         }
         public static void FuncLogin()
         {
-
-            Console.WriteLine("enter your full name or code.");
-            string reporterName = Console.ReadLine();
-            if (Validation.chekIfNameInDB(reporterName))
+            try
             {
-                string connectionString = ConnectToSql.connectionString;
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                string query = @"SELECT Person_Id FROM Person WHERE (First_Name + Last_Name) = @name OR Code_Person = @name";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@name", reporterName);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                Reporter.ReporterId = reader.GetInt32("Person_Id");
-                reader.Close();
-                conn.Close();
-                
+                Console.WriteLine("enter your full name or code.");
+                string reporterName = Console.ReadLine();
+                if (Validation.chekIfNameInDB(reporterName))
+                {
+                    string connectionString = ConnectToSql.connectionString;
+                    MySqlConnection conn = new MySqlConnection(connectionString);
+                    conn.Open();
+                    string query = @"SELECT Person_Id FROM Person WHERE CONCAT(First_Name, Last_Name) = @name OR Code_Person = @name";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@name", reporterName);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    Reporter.ReporterId = reader.GetInt32("Person_Id");
+                    reader.Close();
+                    conn.Close();
 
 
 
+
+                }
+                else
+                {
+                    FunctionsIfNotIn.FunSetPersonReporter();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                FunctionsIfNotIn.FunSetPersonReporter();
+                Console.WriteLine(ex.Message);
             }
-            
-
-
-
         }
-        
-
-
-        
-        
-        
+       
         public static void FuncEnterTarget()
         {
-            Console.WriteLine("enter the full name or code of the target.");
-            string targetNameOrCode = Console.ReadLine();
-            if (Validation.chekIfNameInDB(targetNameOrCode))
+            try
             {
-                string connectionString = ConnectToSql.connectionString;
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                string query = @"SELECT Person_Id FROM Person WHERE (First_Name + Last_Name) = @name OR Code_Person = @name";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@name", targetNameOrCode);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                Target.TargetId = reader.GetInt32("Person_Id");
-                reader.Close();
-                conn.Close();
-                
-            }
-            else
-            {
-                FunctionsIfNotIn.FunSetPersonTarget();
+                Console.WriteLine("enter the full name or code of the target.");
+                string targetNameOrCode = Console.ReadLine();
+                if (Validation.chekIfNameInDB(targetNameOrCode))
+                {
+                    string connectionString = ConnectToSql.connectionString;
+                    MySqlConnection conn = new MySqlConnection(connectionString);
+                    conn.Open();
+                    string query = @"SELECT Person_Id FROM Person WHERE CONCAT(First_Name, Last_Name) = @name OR Code_Person = @name";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@name", targetNameOrCode);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    Target.TargetId = reader.GetInt32("Person_Id");
+                    reader.Close();
+                    conn.Close();
 
+                }
+                else
+                {
+                    FunctionsIfNotIn.FunSetPersonTarget();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
         }
@@ -89,17 +93,24 @@ namespace MalshinonProject
         }
         public static void FuncSetReport()
         {
-            Report.ReporterId = Reporter.ReporterId;
-            Report.TargetId = Target.TargetId;
-            Report.ReportText = FuncEnterReport();
-            Report.TimeOfReport = DateTime.Now;
-            ConnectToSql.InsertToReportDB();
-            ConnectToSql.UpdateAmountsReporter(1, Reporter.AmountOfReports);
-            
-            ConnectToSql.UpdateAmountsTarget();
-            string[] aryWReport = FuncEnterReport().Split(' ');
-            int lengthReport = aryWReport.Length;
-            ConnectToSql.UpdateAmountsReporter(lengthReport, Reporter.AmountOfWords);
+            try
+            {
+                Report.ReporterId = Reporter.ReporterId;
+                Report.TargetId = Target.TargetId;
+                Report.ReportText = FuncEnterReport();
+                Report.TimeOfReport = DateTime.Now;
+                ConnectToSql.InsertToReportDB();
+                ConnectToSql.UpdateAmountsReporter(1);
+
+                ConnectToSql.UpdateAmountsTarget();
+                string[] aryWReport = FuncEnterReport().Split(' ');
+                int lengthReport = aryWReport.Length;
+                ConnectToSql.UpdateAmountWords(lengthReport);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
 
         }

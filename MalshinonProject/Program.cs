@@ -10,6 +10,7 @@ namespace MalshinonProject
     {
         static void Main(string[] args)
         {
+            Functions.FuncAll();
         }
     }
 }

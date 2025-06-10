@@ -17,23 +17,36 @@ namespace MalshinonProject
             //string connectionString = ConnectToSql.connectionString;
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query1 = @"INSERT INTO Reports (Reporter_Id, Target_Id, ReportText,Time_Report )
+            string query1 = @"INSERT INTO Report (Reporter_Id, Target_Id, Report_Text,Time_Report )
                   VALUES (@Reporter_Id, @Target_Id, @Report_Text, @Time_Report)";
             MySqlCommand cmd = new MySqlCommand(query1, conn);
             cmd.Parameters.AddWithValue("@Reporter_Id", Report.ReporterId);
             cmd.Parameters.AddWithValue("@Target_Id", Report.TargetId);
             cmd.Parameters.AddWithValue("@Report_Text", Report.ReportText);
             cmd.Parameters.AddWithValue("@Time_Report", Report.TimeOfReport);
-            
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
-        public static void UpdateAmountsReporter(int adder,int colom)
+        public static void UpdateAmountsReporter(int adder)
         {
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query2 = @"UPDATE Repoters SET @colom = @colom + @adder WHERE Reporter_Id = @Id";
+            string query2 = @"UPDATE Repoters SET Amount_Reports = @Amount_Reports + @adder WHERE Reporter_Id = @Id";
             MySqlCommand cmd = new MySqlCommand(query2, conn);
             cmd.Parameters.AddWithValue("@Id", Reporter.ReporterId);
-            cmd.Parameters.AddWithValue("@colom", colom);
+            
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+        public static void UpdateAmountWords(int adder)
+        {
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            conn.Open();
+            string query8 = @"UPDATE Repoters SET Amount_Words = @Amount_Words + @adder WHERE Reporter_Id = @Id";
+            MySqlCommand cmd = new MySqlCommand(query8, conn);
+            cmd.Parameters.AddWithValue("@Id", Reporter.ReporterId);
+
+            cmd.ExecuteNonQuery();
             conn.Close();
         }
         public static void UpdateAmountsTarget()
@@ -43,6 +56,7 @@ namespace MalshinonProject
             string query3 = @"UPDATE Targets SET Amount_Reports = Amount_Reports + 1 WHERE Target_Id = @Id";
             MySqlCommand cmd = new MySqlCommand(query3, conn);
             cmd.Parameters.AddWithValue("@Id", Target.TargetId);
+            cmd.ExecuteNonQuery();
             conn.Close();
         }
 
@@ -54,10 +68,15 @@ namespace MalshinonProject
             MySqlCommand cmd = new MySqlCommand(query4, conn);
             cmd.Parameters.AddWithValue("@Code_Person", codename);
             MySqlDataReader reader = cmd.ExecuteReader();
+           
             int idperson = reader.GetInt32("Person_Id");
             reader.Close();
             conn.Close();
             return idperson;
+            
+
+                
+            
         }
 
         public static void InsertToPerson()
@@ -71,6 +90,7 @@ namespace MalshinonProject
             cmd.Parameters.AddWithValue("@First_Name", Person.FirstName);
             cmd.Parameters.AddWithValue("@Last_Name", Person.LastName);
             cmd.Parameters.AddWithValue("@Code_Person", Person.CodePerson);
+            cmd.ExecuteNonQuery();
             conn.Close();
 
         }
@@ -86,6 +106,7 @@ namespace MalshinonProject
             cmd.Parameters.AddWithValue("@Reporter_Id", personid);
             cmd.Parameters.AddWithValue("@Amount_Reports", 0);
             cmd.Parameters.AddWithValue("@Amount_Words", 0);
+            cmd.ExecuteNonQuery();
             conn.Close();
 
         }
@@ -101,6 +122,7 @@ namespace MalshinonProject
             cmd.Parameters.AddWithValue("@Target_Id", personid);
             cmd.Parameters.AddWithValue("@Amount_Reports", 0);
             cmd.Parameters.AddWithValue("@Amount_In_15_Minuts", 0);
+            cmd.ExecuteNonQuery();
             conn.Close();
 
         }
