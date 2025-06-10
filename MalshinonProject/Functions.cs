@@ -29,11 +29,11 @@ namespace MalshinonProject
                 string connectionString = ConnectToSql.connectionString;
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
-                string query = @"SELECT Person.Id FROM Person WHERE (Person.FirstName + Person.LastName) = @name OR Person.CodePerson = @name";
+                string query = @"SELECT Person_Id FROM Person WHERE (First_Name + Last_Name) = @name OR Code_Person = @name";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@name", reporterName);
                 MySqlDataReader reader = cmd.ExecuteReader();
-                Reporter.ReporterId = reader.GetInt32("PersonId");
+                Reporter.ReporterId = reader.GetInt32("Person_Id");
                 reader.Close();
                 conn.Close();
                 
@@ -65,11 +65,11 @@ namespace MalshinonProject
                 string connectionString = ConnectToSql.connectionString;
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
-                string query = @"SELECT Person.Id FROM Person WHERE (Person.FirstName + Person.LastName) = @name OR Person.CodePerson = @name";
+                string query = @"SELECT Person_Id FROM Person WHERE (First_Name + Last_Name) = @name OR Code_Person = @name";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@name", targetNameOrCode);
                 MySqlDataReader reader = cmd.ExecuteReader();
-                Target.TargetId = reader.GetInt32("PersonId");
+                Target.TargetId = reader.GetInt32("Person_Id");
                 reader.Close();
                 conn.Close();
                 

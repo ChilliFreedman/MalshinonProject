@@ -10,27 +10,27 @@ namespace MalshinonProject
 {
     internal static  class ConnectToSql
     {
-        public static string connectionString = "server=localhost;" + "user=root;" + "database=malshinon;" + "port=3306;";
+        public static string connectionString = "server=localhost;" + "user=root;" + "database=malshinon_project;" + "port=3306;";
 
         public static void InsertToReportDB()
         {
             //string connectionString = ConnectToSql.connectionString;
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query1 = @"INSERT INTO Reports (ReporterId, TargetId, ReportText,TimeOfReport )
-                  VALUES (@ReporterId, @TargetId, @ReportText, @TimeOfReport)";
+            string query1 = @"INSERT INTO Reports (Reporter_Id, Target_Id, ReportText,Time_Report )
+                  VALUES (@Reporter_Id, @Target_Id, @Report_Text, @Time_Report)";
             MySqlCommand cmd = new MySqlCommand(query1, conn);
-            cmd.Parameters.AddWithValue("@ReporterId", Report.ReporterId);
-            cmd.Parameters.AddWithValue("@TargetId", Report.TargetId);
-            cmd.Parameters.AddWithValue("@ReportText", Report.ReportText);
-            cmd.Parameters.AddWithValue("@TimeOfReport", Report.TimeOfReport);
+            cmd.Parameters.AddWithValue("@Reporter_Id", Report.ReporterId);
+            cmd.Parameters.AddWithValue("@Target_Id", Report.TargetId);
+            cmd.Parameters.AddWithValue("@Report_Text", Report.ReportText);
+            cmd.Parameters.AddWithValue("@Time_Report", Report.TimeOfReport);
             
         }
         public static void UpdateAmountsReporter(int adder,int colom)
         {
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query2 = @"UPDATE Repoter SET @colom = @colom + @adder WHERE ReporterId = @Id";
+            string query2 = @"UPDATE Repoters SET @colom = @colom + @adder WHERE Reporter_Id = @Id";
             MySqlCommand cmd = new MySqlCommand(query2, conn);
             cmd.Parameters.AddWithValue("@Id", Reporter.ReporterId);
             cmd.Parameters.AddWithValue("@colom", colom);
@@ -40,7 +40,7 @@ namespace MalshinonProject
         {
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query3 = @"UPDATE Target SET AmountReports = AmountReports + 1 WHERE TargetId = @Id";
+            string query3 = @"UPDATE Targets SET Amount_Reports = Amount_Reports + 1 WHERE Target_Id = @Id";
             MySqlCommand cmd = new MySqlCommand(query3, conn);
             cmd.Parameters.AddWithValue("@Id", Target.TargetId);
             conn.Close();
@@ -50,9 +50,9 @@ namespace MalshinonProject
         {
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query4 = @"SELECT Person.Id FROM Person WHERE CodePerson = @codePerson";
+            string query4 = @"SELECT Person_Id FROM Person WHERE Code_Person = @codePerson";
             MySqlCommand cmd = new MySqlCommand(query4, conn);
-            cmd.Parameters.AddWithValue("@codePerson", codename);
+            cmd.Parameters.AddWithValue("@Code_Person", codename);
             MySqlDataReader reader = cmd.ExecuteReader();
             int idperson = reader.GetInt32("Person_Id");
             reader.Close();
@@ -65,12 +65,12 @@ namespace MalshinonProject
          
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query5 = @"INSERT INTO Person (FirstName, LastName, CodePerson)
-                  VALUES (@FirstName, @LastName, @CodePerson)";
+            string query5 = @"INSERT INTO Person (First_Name, Last_Name, Code_Person)
+                  VALUES (@First_Name, @Last_Name, @Code_Person)";
             MySqlCommand cmd = new MySqlCommand(query5, conn);
-            cmd.Parameters.AddWithValue("@FirstName", Person.FirstName);
-            cmd.Parameters.AddWithValue("@LastName", Person.LastName);
-            cmd.Parameters.AddWithValue("@CodePerson", Person.CodePerson);
+            cmd.Parameters.AddWithValue("@First_Name", Person.FirstName);
+            cmd.Parameters.AddWithValue("@Last_Name", Person.LastName);
+            cmd.Parameters.AddWithValue("@Code_Person", Person.CodePerson);
             conn.Close();
 
         }
@@ -80,12 +80,12 @@ namespace MalshinonProject
 
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query6 = @"INSERT INTO Reporter (ReporterId, AmountOfReports, AmountOfWords)
-                  VALUES (@ReporterId, @AmountOfReports, @AmountOfWords)";
+            string query6 = @"INSERT INTO Reporter (Reporter_Id, Amount_Reports, Amount_Words)
+                  VALUES (@Reporter_Id, @Amount_Reports, @Amount_Words)";
             MySqlCommand cmd = new MySqlCommand(query6, conn);
-            cmd.Parameters.AddWithValue("@ReporterId", personid);
-            cmd.Parameters.AddWithValue("@AmountOfReports", 0);
-            cmd.Parameters.AddWithValue("@AmountOfWords", 0);
+            cmd.Parameters.AddWithValue("@Reporter_Id", personid);
+            cmd.Parameters.AddWithValue("@Amount_Reports", 0);
+            cmd.Parameters.AddWithValue("@Amount_Words", 0);
             conn.Close();
 
         }
@@ -95,12 +95,12 @@ namespace MalshinonProject
 
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query7 = @"INSERT INTO  Target (TargetId, AmountOfReports, AmountOfReportsIn15Minuts)
-                  VALUES (@TargetId, @AmountOfReports, @AmountOfReportsIn15Minuts)";
+            string query7 = @"INSERT INTO  Target (Target_Id, Amount_Reports, Amount_In_15_Minuts)
+                  VALUES (@Target_Id, @Amount_Reports, @Amount_In_15_Minuts)";
             MySqlCommand cmd = new MySqlCommand(query7, conn);
-            cmd.Parameters.AddWithValue("@TargetId", personid);
-            cmd.Parameters.AddWithValue("@AmountOfReports", 0);
-            cmd.Parameters.AddWithValue("@AmountOfWords", 0);
+            cmd.Parameters.AddWithValue("@Target_Id", personid);
+            cmd.Parameters.AddWithValue("@Amount_Reports", 0);
+            cmd.Parameters.AddWithValue("@Amount_In_15_Minuts", 0);
             conn.Close();
 
         }
