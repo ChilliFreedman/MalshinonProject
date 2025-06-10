@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace MalshinonProject
 {
-    internal class Target
+    internal static class Target
     {
+        public static int TargetId { get; set; }
+        public static string AmountOfReports { get; set; }
+
+        public static string AmountOfReportsIn15Minuts { get; set; }
     }
 }
