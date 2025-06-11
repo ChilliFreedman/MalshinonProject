@@ -154,6 +154,51 @@ namespace MalshinonProject
             cmd.ExecuteNonQuery();
             conn.Close();
         }
+
+        public static void InsertToAlert(string text)
+        {
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            conn.Open();
+            string query11 = @"INSERT INTO Alerts (Target_Id, Brief_Explanation)
+                  VALUES (@Target_Id, @Brief_Explanation)";
+            MySqlCommand cmd = new MySqlCommand(query11, conn);
+            cmd.Parameters.AddWithValue(@"Target_Id", Report.TargetId);
+            cmd.Parameters.AddWithValue("@Brief_Explanation", text);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+        public static int GetAmuntOfReports(int id)
+        {
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            conn.Open();
+            string query12 = @"SELECT Amount_Reports FROM Targets WHERE Target_Id = @id ";
+            MySqlCommand cmd = new MySqlCommand(query12, conn);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            int amounreports = Convert.ToInt32(cmd.ExecuteScalar());
+            conn.Close();
+            return amounreports;
+        }
+        //בדיקת התרעה
+        public static string getaalert()
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connectionString);
+                conn.Open();
+                string query12 = @"SELECT Brief_Explanation FROM Alerts WHERE Alert_Id = @num";
+                MySqlCommand cmd = new MySqlCommand(query12, conn);
+                cmd.Parameters.AddWithValue("@num", 3);
+                string brif = Convert.ToString(cmd.ExecuteScalar());
+                conn.Close();
+                return brif;
+            }
+            catch (Exception ex)
+            {
+               return ex.Message;
+            }
+
+        }
     }    
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -112,6 +113,21 @@ namespace MalshinonProject
                 ConnectToSql.UpdateAmountWords(lengthReport);
                 int amount15minut = ConnectToSql.get15minutreports();
                 ConnectToSql.Update15MinutReportsToTarget(amount15minut);
+                //קבלת מספר הדיווחים על המטרה עד כה
+                int amountreports = ConnectToSql.GetAmuntOfReports(Report.TargetId);
+                //בדיקה האם יש מעל 20 דיווחים על המטרה או מתפרצת של 3 ומעלה דיווחים ב15 דקות האחרונות ולפי זה מחליט אם ליצר התרעות ולהכניס את הערכים
+                if (amount15minut >= 3 && amountreports >= 20)
+                {
+                    ConnectToSql.InsertToAlert($"The alert was created after receiving {amount15minut} reports Between {Report.TimeOfReport - TimeSpan.FromMinutes(15)} and {Report.TimeOfReport} and because there are {amountreports} reports on the target as of {Report.TimeOfReport} o'clock.");
+                }
+                else if (amount15minut >= 3)
+                {
+                    ConnectToSql.InsertToAlert($"The alert was created after receiving {amount15minut} reports Between {Report.TimeOfReport - TimeSpan.FromMinutes(15)} and {Report.TimeOfReport}.");
+                }
+                else if (amountreports >= 20)
+                {
+                    ConnectToSql.InsertToAlert($"The alert was created because there are {amountreports} reports on the target as of {Report.TimeOfReport} o'clock.");
+                }
             }
             catch (Exception ex)
             {
@@ -121,6 +137,6 @@ namespace MalshinonProject
 
         }
 
-
+        
     }
 }

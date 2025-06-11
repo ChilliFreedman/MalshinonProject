@@ -13,8 +13,11 @@ namespace MalshinonProject
             //בדיקת קריאה לפןנקציה הכוללת של ההכנסת דיווח
 
             Functions.FuncAll();
+
             
-           
+
+
+
         }
     }
 }
