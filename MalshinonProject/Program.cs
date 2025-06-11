@@ -10,7 +10,11 @@ namespace MalshinonProject
     {
         static void Main(string[] args)
         {
+            //בדיקת קריאה לפןנקציה הכוללת של ההכנסת דיווח
+
             Functions.FuncAll();
+            
+           
         }
     }
 }

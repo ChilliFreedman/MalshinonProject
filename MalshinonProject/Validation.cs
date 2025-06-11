@@ -9,6 +9,7 @@ namespace MalshinonProject
 {
     internal static class Validation
     {
+        //פונקציה שבודקת האם קיים הקוד או השם המלא בעמודה של האנשים ומחזירה ערך בוליאני
         public static bool chekIfNameInDB(string name)
         {
             string connectionString = ConnectToSql.connectionString;

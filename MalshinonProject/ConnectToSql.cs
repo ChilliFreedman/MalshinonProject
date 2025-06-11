@@ -9,7 +9,7 @@ using Org.BouncyCastle.Asn1.X509;
 
 namespace MalshinonProject
 {
-    internal static  class ConnectToSql
+    internal static class ConnectToSql
     {
         public static string connectionString = "server=localhost;" + "user=root;" + "database=malshinon_project;" + "port=3306;";
 
@@ -34,7 +34,7 @@ namespace MalshinonProject
             string query2 = @"UPDATE Reporters SET Amount_Reports = Amount_Reports + 1 WHERE Reporter_Id = @Id";
             MySqlCommand cmd = new MySqlCommand(query2, conn);
             cmd.Parameters.AddWithValue("@Id", Reporter.ReporterId);
-            
+
             cmd.ExecuteNonQuery();
             conn.Close();
         }
@@ -71,15 +71,15 @@ namespace MalshinonProject
             int idperson = Convert.ToInt32(cmd.ExecuteScalar());
             conn.Close();
             return idperson;
-            
 
-                
-            
+
+
+
         }
 
         public static void InsertToPerson()
         {
-         
+
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
             string query5 = @"INSERT INTO Person (First_Name, Last_Name, Code_Person)
@@ -131,6 +131,29 @@ namespace MalshinonProject
             conn.Close();
 
         }
-
-    }
+        public static int get15minutreports()
+        {
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            conn.Open();
+            string query9 = @"SELECT COUNT(*) FROM Report WHERE Target_Id = @corentid AND  Time_Report BETWEEN DATE_SUB(@datetime, INTERVAL 15 MINUTE) AND @datetime";
+            MySqlCommand cmd = new MySqlCommand(query9, conn);
+            cmd.Parameters.AddWithValue("@corentid", Report.TargetId);
+            cmd.Parameters.AddWithValue("@datetime", Report.TimeOfReport);
+            int amount15minut = Convert.ToInt32(cmd.ExecuteScalar());
+            conn.Close();
+            return amount15minut;
+        }
+        public static void Update15MinutReportsToTarget(int get15minutreports)
+        {
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            conn.Open();
+            string query10 = @"UPDATE Targets SET Amount_In_15_Minuts  =  + @get15minutreports WHERE Target_Id = @Id";
+            MySqlCommand cmd = new MySqlCommand(query10, conn);
+            cmd.Parameters.AddWithValue("@Id", Target.TargetId);
+            cmd.Parameters.AddWithValue("@get15minutreports", get15minutreports);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+    }    
 }
+
