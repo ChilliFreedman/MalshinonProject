@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace MalshinonProject
 {
@@ -14,7 +15,6 @@ namespace MalshinonProject
 
         public static void InsertToReportDB()
         {
-            //string connectionString = ConnectToSql.connectionString;
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
             string query1 = @"INSERT INTO Report (Reporter_Id, Target_Id, Report_Text,Time_Report )
@@ -27,11 +27,11 @@ namespace MalshinonProject
             cmd.ExecuteNonQuery();
             conn.Close();
         }
-        public static void UpdateAmountsReporter(int adder)
+        public static void UpdateAmountsReporter()
         {
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query2 = @"UPDATE Repoters SET Amount_Reports = @Amount_Reports + @adder WHERE Reporter_Id = @Id";
+            string query2 = @"UPDATE Reporters SET Amount_Reports = Amount_Reports + 1 WHERE Reporter_Id = @Id";
             MySqlCommand cmd = new MySqlCommand(query2, conn);
             cmd.Parameters.AddWithValue("@Id", Reporter.ReporterId);
             
@@ -42,9 +42,10 @@ namespace MalshinonProject
         {
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query8 = @"UPDATE Repoters SET Amount_Words = @Amount_Words + @adder WHERE Reporter_Id = @Id";
+            string query8 = @"UPDATE Reporters SET Amount_Words = Amount_Words + @adder WHERE Reporter_Id = @Id";
             MySqlCommand cmd = new MySqlCommand(query8, conn);
             cmd.Parameters.AddWithValue("@Id", Reporter.ReporterId);
+            cmd.Parameters.AddWithValue("@adder", adder);
 
             cmd.ExecuteNonQuery();
             conn.Close();
@@ -60,17 +61,14 @@ namespace MalshinonProject
             conn.Close();
         }
 
-        public static int getpersonid(string codename)
+        public static int getpersonid()
         {
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query4 = @"SELECT Person_Id FROM Person WHERE Code_Person = @codePerson";
+            string query4 = @"SELECT Person_Id FROM Person WHERE Code_Person = @code_Person";
             MySqlCommand cmd = new MySqlCommand(query4, conn);
-            cmd.Parameters.AddWithValue("@Code_Person", codename);
-            MySqlDataReader reader = cmd.ExecuteReader();
-           
-            int idperson = reader.GetInt32("Person_Id");
-            reader.Close();
+            cmd.Parameters.AddWithValue("@Code_Person", Person.CodePerson);
+            int idperson = Convert.ToInt32(cmd.ExecuteScalar());
             conn.Close();
             return idperson;
             
@@ -100,8 +98,11 @@ namespace MalshinonProject
 
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query6 = @"INSERT INTO Reporter (Reporter_Id, Amount_Reports, Amount_Words)
-                  VALUES (@Reporter_Id, @Amount_Reports, @Amount_Words)";
+            string query6 = @"
+            INSERT INTO Reporters (Reporter_Id, Amount_Reports, Amount_Words)
+            VALUES (@Reporter_Id, @Amount_Reports, @Amount_Words)
+            ON DUPLICATE KEY UPDATE Reporter_Id = Reporter_Id;
+            ";
             MySqlCommand cmd = new MySqlCommand(query6, conn);
             cmd.Parameters.AddWithValue("@Reporter_Id", personid);
             cmd.Parameters.AddWithValue("@Amount_Reports", 0);
@@ -116,8 +117,12 @@ namespace MalshinonProject
 
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query7 = @"INSERT INTO  Target (Target_Id, Amount_Reports, Amount_In_15_Minuts)
-                  VALUES (@Target_Id, @Amount_Reports, @Amount_In_15_Minuts)";
+            string query7 = @"
+            INSERT INTO Targets (Target_Id, Amount_Reports, Amount_In_15_Minuts)
+            VALUES (@Target_Id, @Amount_Reports, @Amount_In_15_Minuts)
+            ON DUPLICATE KEY UPDATE Target_Id = Target_Id;
+            ";
+
             MySqlCommand cmd = new MySqlCommand(query7, conn);
             cmd.Parameters.AddWithValue("@Target_Id", personid);
             cmd.Parameters.AddWithValue("@Amount_Reports", 0);

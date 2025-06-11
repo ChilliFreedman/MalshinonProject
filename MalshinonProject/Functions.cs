@@ -15,7 +15,6 @@ namespace MalshinonProject
        {
             FuncLogin();
             FuncEnterTarget();
-            FuncEnterReport();
             FuncSetReport();
             
         }
@@ -33,14 +32,9 @@ namespace MalshinonProject
                     string query = @"SELECT Person_Id FROM Person WHERE CONCAT(First_Name, Last_Name) = @name OR Code_Person = @name";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@name", reporterName);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    Reporter.ReporterId = reader.GetInt32("Person_Id");
-                    reader.Close();
+                    Reporter.ReporterId = Convert.ToInt32(cmd.ExecuteScalar());
+                    ConnectToSql.InsertToReporter(Reporter.ReporterId);
                     conn.Close();
-
-
-
-
                 }
                 else
                 {
@@ -67,9 +61,8 @@ namespace MalshinonProject
                     string query = @"SELECT Person_Id FROM Person WHERE CONCAT(First_Name, Last_Name) = @name OR Code_Person = @name";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@name", targetNameOrCode);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    Target.TargetId = reader.GetInt32("Person_Id");
-                    reader.Close();
+                    Target.TargetId = Convert.ToInt32(cmd.ExecuteScalar());
+                    ConnectToSql.InsertToTarget(Target.TargetId);
                     conn.Close();
 
                 }
@@ -85,25 +78,22 @@ namespace MalshinonProject
             }
 
         }
-        public static string FuncEnterReport()
-        {
-            Console.WriteLine("enter the report.");
-            string reportText = Console.ReadLine();
-            return reportText;
-        }
+        
         public static void FuncSetReport()
         {
             try
             {
+                Console.WriteLine("enter the report.");
+                string reportText = Console.ReadLine();
                 Report.ReporterId = Reporter.ReporterId;
                 Report.TargetId = Target.TargetId;
-                Report.ReportText = FuncEnterReport();
+                Report.ReportText = reportText;
                 Report.TimeOfReport = DateTime.Now;
                 ConnectToSql.InsertToReportDB();
-                ConnectToSql.UpdateAmountsReporter(1);
+                ConnectToSql.UpdateAmountsReporter();
 
                 ConnectToSql.UpdateAmountsTarget();
-                string[] aryWReport = FuncEnterReport().Split(' ');
+                string[] aryWReport = reportText.Split(' ');
                 int lengthReport = aryWReport.Length;
                 ConnectToSql.UpdateAmountWords(lengthReport);
             }

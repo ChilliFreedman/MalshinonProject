@@ -10,6 +10,7 @@ namespace MalshinonProject
     {
         public static  void FunSetPersonReporter()
         {
+            Console.WriteLine("The system does not recognize you.");
             Console.WriteLine("enter your first name ");
             Person.FirstName = Console.ReadLine();
             Console.WriteLine("enter your last name ");
@@ -17,18 +18,21 @@ namespace MalshinonProject
             Console.WriteLine("enter a code");
             Person.CodePerson = Console.ReadLine();
             ConnectToSql.InsertToPerson();
-            Reporter.ReporterId = ConnectToSql.getpersonid(Person.CodePerson);
+            Reporter.ReporterId = ConnectToSql.getpersonid();
+            //Console.WriteLine(Reporter.ReporterId);
             ConnectToSql.InsertToReporter(Reporter.ReporterId);
         }
         public static void FunSetPersonTarget()
         {
-            Console.WriteLine("enter your first name ");
+            Console.WriteLine("The system does not recognize the target.");
+            Console.WriteLine("enter the targets first name ");
             Person.FirstName = Console.ReadLine();
-            Console.WriteLine("enter your last name ");
+            Console.WriteLine("enter the targets last name ");
             Person.LastName = Console.ReadLine();
-            Console.WriteLine("enter a code");
+            Console.WriteLine("enter the targets code");
             Person.CodePerson = Console.ReadLine();
-            Target.TargetId = ConnectToSql.getpersonid(Person.CodePerson);
+            ConnectToSql.InsertToPerson();
+            Target.TargetId = ConnectToSql.getpersonid();
             ConnectToSql.InsertToTarget(Target.TargetId);
         }
     }
