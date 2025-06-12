@@ -14,7 +14,10 @@ namespace MalshinonProject
 
             //Functions.FuncAll();
 
-            PrintsForDisplay.PrintStrongReporters();
+            //בדיקת קריאה לפונקציה של הדפסת המועמדים לגיוס
+            //PrintsForDisplay.PrintStrongReporters();
+
+            PrintsForDisplay.PrintSAlerts();
 
 
 

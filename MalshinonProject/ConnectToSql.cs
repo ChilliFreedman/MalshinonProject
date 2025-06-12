@@ -180,25 +180,40 @@ namespace MalshinonProject
             return amounreports;
         }
         //בדיקת התרעה
-        public static string getaalert()
+        public static List<KeyValuePair<string, string>> GetaAlerts()
         {
             try
             {
+                List<KeyValuePair<string, string>> FullNameBrief = new List<KeyValuePair<string, string>>();
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
-                string query12 = @"SELECT  Brief_Explanation FROM Alerts WHERE Alert_Id = @num";
+                string query12 = "SELECT CONCAT(person.First_Name, person.Last_Name)  AS Fullname ,Alerts.Brief_Explanation AS Brief " +
+                                   "FROM Person "+
+                                   "JOIN Alerts "+
+                                   "ON Alerts.Target_Id = Person.Person_Id";
+ 
+                                   
                 MySqlCommand cmd = new MySqlCommand(query12, conn);
-                cmd.Parameters.AddWithValue("@num", 3);
-                string brif = Convert.ToString(cmd.ExecuteScalar());
+                MySqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string fullName = reader["Fullname"].ToString();
+                    string brief = reader["Brief"].ToString();
+
+                    FullNameBrief.Add(new KeyValuePair<string, string>(fullName, brief));
+                }
+                reader.Close();
                 conn.Close();
-                return brif;
-            }
+                return FullNameBrief;
+
+        }
             catch (Exception ex)
             {
-               return ex.Message;
+                Console.WriteLine(ex.Message);
             }
-            
+            return null;
         }
+        // פונקציית חיבור לDB וקבלת כל הדווחים המועמדים לגיוס
         public static Dictionary<string,string> GetAllStrongReporters()
         {
             Dictionary<string,string> FullNameAndCode = new Dictionary<string,string>();

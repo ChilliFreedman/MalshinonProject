@@ -10,15 +10,27 @@ namespace MalshinonProject
     {
         public static void PrintStrongReporters()
         {
-            Dictionary<string,string>  dict = new Dictionary<string,string>();
-            dict = ConnectToSql.GetAllStrongReporters();
-            foreach (var keyvalue in dict)
+            Dictionary<string,string>  DictStrongReporters = new Dictionary<string,string>();
+            DictStrongReporters = ConnectToSql.GetAllStrongReporters();
+            
+            foreach (var keyvalue in DictStrongReporters)
+            {
+                Console.WriteLine($"FuulName :{keyvalue.Key} code: {keyvalue.Value}");
 
+            }
+        }
 
-                {
-                    Console.WriteLine($"FuulName :{keyvalue.Key} code: {keyvalue.Value}");
+        public static void PrintSAlerts()
+        {
+            List<KeyValuePair<string, string>> FullNameBrief = new List<KeyValuePair<string, string>>();
+            int a = 1;
+            FullNameBrief = ConnectToSql.GetaAlerts();
+            foreach (var keyvalue in FullNameBrief)
 
-                }
+            {
+                Console.WriteLine($"Alert: {a}, FuulName: {keyvalue.Key}, Brief: {keyvalue.Value}.");
+                a++;
+            }
         }
     }   
 }
