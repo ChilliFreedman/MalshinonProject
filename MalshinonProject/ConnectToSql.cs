@@ -179,7 +179,7 @@ namespace MalshinonProject
             conn.Close();
             return amounreports;
         }
-        //בדיקת התרעה
+        //פונקצית חיבור לDB והדפסת כל ההתרעות
         public static List<KeyValuePair<string, string>> GetaAlerts()
         {
             try
@@ -187,7 +187,7 @@ namespace MalshinonProject
                 List<KeyValuePair<string, string>> FullNameBrief = new List<KeyValuePair<string, string>>();
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
-                string query12 = "SELECT CONCAT(person.First_Name, person.Last_Name)  AS Fullname ,Alerts.Brief_Explanation AS Brief " +
+                string query12 = "SELECT CONCAT(person.First_Name,' ', person.Last_Name)  AS Fullname ,Alerts.Brief_Explanation AS Brief " +
                                    "FROM Person "+
                                    "JOIN Alerts "+
                                    "ON Alerts.Target_Id = Person.Person_Id";
@@ -219,7 +219,7 @@ namespace MalshinonProject
             Dictionary<string,string> FullNameAndCode = new Dictionary<string,string>();
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query13 = @"SELECT  CONCAT(person.First_Name, person.Last_Name)  AS Fuulname ,person.Code_Person AS Code
+            string query13 = @"SELECT  CONCAT(person.First_Name,' ', person.Last_Name)  AS Fuulname ,person.Code_Person AS Code
                                FROM person
                                JOIN reporters
                                on reporters.Reporter_Id = person.Person_Id

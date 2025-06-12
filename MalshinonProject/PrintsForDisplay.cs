@@ -15,7 +15,7 @@ namespace MalshinonProject
             
             foreach (var keyvalue in DictStrongReporters)
             {
-                Console.WriteLine($"FuulName :{keyvalue.Key} code: {keyvalue.Value}");
+                Console.WriteLine($"\nFuulName :{keyvalue.Key} \ncode: {keyvalue.Value}");
 
             }
         }
@@ -28,7 +28,7 @@ namespace MalshinonProject
             foreach (var keyvalue in FullNameBrief)
 
             {
-                Console.WriteLine($"Alert: {a}, FuulName: {keyvalue.Key}, Brief: {keyvalue.Value}.");
+                Console.WriteLine($"\nAlert {a}: \nFuulName: {keyvalue.Key}. \nBrief: {keyvalue.Value}.");
                 a++;
             }
         }

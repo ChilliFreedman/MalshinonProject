@@ -15,7 +15,7 @@ namespace MalshinonProject
             string connectionString = ConnectToSql.connectionString;
             MySqlConnection conn = new MySqlConnection(connectionString);
             conn.Open();
-            string query = @"SELECT EXISTS (SELECT 1 FROM Person WHERE CONCAT(First_Name, Last_Name) = @name OR Code_Person = @name)AS `EXISTS`";
+            string query = @"SELECT EXISTS (SELECT 1 FROM Person WHERE CONCAT(First_Name,' ', Last_Name) = @name OR Code_Person = @name)AS `EXISTS`";
             MySqlCommand cmd = new MySqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@name", name);
             object result = cmd.ExecuteScalar();

@@ -11,12 +11,12 @@ namespace MalshinonProject
         //פונקציה שמבקשת למשתמש להכניס ערכים של המדווח ומכניסה את הערכים לעמודה של האנשים ושל המדווח
         public static  void FunSetPersonReporter()
         {
-            Console.WriteLine("The system does not recognize you.");
-            Console.WriteLine("enter your first name ");
+            Console.WriteLine("\nThe system does not recognize you.");
+            Console.WriteLine("\n1. Enter your first name ");
             Person.FirstName = Console.ReadLine();
-            Console.WriteLine("enter your last name ");
+            Console.WriteLine("\n2. Enter your last name ");
             Person.LastName = Console.ReadLine();
-            Console.WriteLine("enter a code");
+            Console.WriteLine("\n3. Enter a code");
             Person.CodePerson = Console.ReadLine();
             //מכניס את הערכים לטבלה של האנשים
             ConnectToSql.InsertToPerson();
@@ -28,12 +28,12 @@ namespace MalshinonProject
         //פונקציה שמבקשת למשתמש להכניס ערכים של המטרה ומכניסה את הערכים לטבלה של האנשים ושל המטרה
         public static void FunSetPersonTarget()
         {
-            Console.WriteLine("The system does not recognize the target.");
-            Console.WriteLine("enter the targets first name ");
+            Console.WriteLine("\nThe system does not recognize the target.");
+            Console.WriteLine("\n1. Enter the targets first name ");
             Person.FirstName = Console.ReadLine();
-            Console.WriteLine("enter the targets last name ");
+            Console.WriteLine("\n2. Enter the targets last name ");
             Person.LastName = Console.ReadLine();
-            Console.WriteLine("enter the targets code");
+            Console.WriteLine("\n3. Enter the targets code");
             Person.CodePerson = Console.ReadLine();
             //מכניס ערכים לטבלה  של האנשים
             ConnectToSql.InsertToPerson();

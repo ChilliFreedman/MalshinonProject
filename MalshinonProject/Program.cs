@@ -17,7 +17,11 @@ namespace MalshinonProject
             //בדיקת קריאה לפונקציה של הדפסת המועמדים לגיוס
             //PrintsForDisplay.PrintStrongReporters();
 
-            PrintsForDisplay.PrintSAlerts();
+            //בדיקת קריאה לפונקציה שמדפיבה את כל ההתרעות
+            //PrintsForDisplay.PrintSAlerts();
+
+            //קריאה לתפריט הראשית
+            Menue.AdminMenu();
 
 
 
