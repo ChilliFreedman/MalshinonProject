@@ -186,7 +186,7 @@ namespace MalshinonProject
             {
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
-                string query12 = @"SELECT Brief_Explanation FROM Alerts WHERE Alert_Id = @num";
+                string query12 = @"SELECT  Brief_Explanation FROM Alerts WHERE Alert_Id = @num";
                 MySqlCommand cmd = new MySqlCommand(query12, conn);
                 cmd.Parameters.AddWithValue("@num", 3);
                 string brif = Convert.ToString(cmd.ExecuteScalar());
@@ -197,8 +197,28 @@ namespace MalshinonProject
             {
                return ex.Message;
             }
-
+            
         }
-    }    
+        public static Dictionary<string,string> GetAllStrongReporters()
+        {
+            Dictionary<string,string> FullNameAndCode = new Dictionary<string,string>();
+            MySqlConnection conn = new MySqlConnection(connectionString);
+            conn.Open();
+            string query13 = @"SELECT  CONCAT(person.First_Name, person.Last_Name)  AS Fuulname ,person.Code_Person AS Code
+                               FROM person
+                               JOIN reporters
+                               on reporters.Reporter_Id = person.Person_Id
+                               WHERE reporters.Amount_Reports >= 10 AND reporters.Amount_Words / reporters.Reporter_Id >= 100 ";
+            MySqlCommand cmd = new MySqlCommand(query13, conn);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                FullNameAndCode.Add(reader.GetString("Fuulname"), reader.GetString("Code"));
+            }
+            reader.Close();
+            conn.Close();
+            return FullNameAndCode;
+        }
+    }  
 }
 
